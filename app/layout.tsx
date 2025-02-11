@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Comfortaa, Geist } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./_components/providers";
+import { Analytics } from "@vercel/analytics/next";
 
 const comfortaa = Comfortaa({
   variable: "--font-comfortaa",
@@ -27,6 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${comfortaa.variable} ${geist.variable} antialiased`}>
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
