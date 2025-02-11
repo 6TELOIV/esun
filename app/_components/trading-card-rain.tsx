@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn, RandomNumberGenerator } from "@/lib/utils";
 
-const DURATION = 10;
+const DURATION = 15;
 const CARD_COUNT = 30;
 
 interface Card {
@@ -17,6 +17,7 @@ interface Card {
   targetRotationY: number;
   targetRotationZ: number;
   image: string;
+  depth: number;
 }
 
 const generateCard = (
@@ -32,6 +33,7 @@ const generateCard = (
   targetRotationY: (Math.random() < 0.5 ? 1 : -1) * (Math.random() * 45 + 20),
   targetRotationZ: (Math.random() < 0.5 ? 1 : -1) * (Math.random() * 45 + 20),
   image: images[Math.floor(Math.random() * images.length)],
+  depth: Math.random() * 1000 - 500,
 });
 
 const TradingCardRain = ({
@@ -90,32 +92,46 @@ const TradingCardRain = ({
         "absolute -z-10 inset-0 overflow-hidden pointer-events-none w-full h-full",
         className
       )}
+      style={{
+        perspective: "1000px",
+        transformStyle: "preserve-3d",
+      }}
     >
-      {cards.map((card) => (
-        <motion.img
-          key={card.id}
-          src={card.image}
-          className="absolute object-cover shadow-lg rounded-md"
-          initial={{
-            y: -cardSize * 2,
-            rotateX: card.rotationX,
-            rotateY: card.rotationY,
-            rotateZ: card.rotationZ,
-          }}
-          animate={{
-            y: parentSize.height + cardSize * 2,
-            rotateX: card.targetRotationX,
-            rotateY: card.targetRotationY,
-            rotateZ: card.targetRotationZ,
-          }}
-          transition={{ duration: DURATION, ease: "linear" }}
-          style={{
-            left: card.x,
-            width: `${cardSize}px`,
-          }}
-        />
-      ))}
-      <div className="absolute inset-0 bg-background opacity-75" />
+      {cards.map((card) => {
+        const normalizedZIndex = Math.floor(card.depth - 500);
+        return (
+          <motion.img
+            key={card.id}
+            src={card.image}
+            className="absolute object-cover shadow-lg rounded-md"
+            initial={{
+              y: -cardSize * (-normalizedZIndex / cardSize),
+              rotateX: card.rotationX,
+              rotateY: card.rotationY,
+              rotateZ: card.rotationZ,
+              z: card.depth,
+            }}
+            animate={{
+              y: parentSize.height + cardSize * (-normalizedZIndex / cardSize),
+              rotateX: card.targetRotationX,
+              rotateY: card.targetRotationY,
+              rotateZ: card.targetRotationZ,
+            }}
+            transition={{
+              duration: DURATION * (-normalizedZIndex / 2000 + 0.5),
+              ease: "linear",
+            }}
+            style={{
+              left: card.x,
+              width: `${cardSize}px`,
+              transform: `rotateX(${card.rotationX}deg) rotateY(${card.rotationY}deg) rotateZ(${card.rotationZ}deg) translateZ(${card.depth}px)`,
+              zIndex: normalizedZIndex,
+            }}
+          />
+        );
+      })}
+      <div className="absolute inset-0 bg-background opacity-50" />
+      <div className="absolute inset-0 -z-[500] bg-background opacity-50" />
     </div>
   );
 };
