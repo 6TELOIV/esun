@@ -37,7 +37,7 @@ export function TextSpinner({
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [gameIndex, itemIndex]);
+  }, [games, items, gameIndex, itemIndex]);
 
   return (
     <span

@@ -50,7 +50,7 @@ const TradingCardRain = ({
   );
   const weightedRandom = useMemo(
     () => new RandomNumberGenerator({ min: -cardSize, max: parentSize.width }),
-    [parentSize]
+    [parentSize, cardSize]
   );
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const TradingCardRain = ({
     if (parentSize.width > 0 && parentSize.height > 0) {
       setCards([generateCard(images, weightedRandom)]);
     }
-  }, [parentSize, images]);
+  }, [parentSize, images, weightedRandom]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,7 +81,7 @@ const TradingCardRain = ({
     }, (DURATION * 1000) / CARD_COUNT);
 
     return () => clearInterval(interval);
-  }, [parentSize, images]);
+  }, [parentSize, images, weightedRandom]);
 
   return (
     <div

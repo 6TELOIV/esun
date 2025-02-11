@@ -40,7 +40,7 @@ export default function Home() {
               <h1>esun</h1>
               <p>
                 <span className="text-muted-foreground">
-                  \'e sun\{" "}
+                  \&apos;e sun\{" "}
                   <a
                     className="no-underline hover:underline text-inherit"
                     href="https://tokipona.org/"
