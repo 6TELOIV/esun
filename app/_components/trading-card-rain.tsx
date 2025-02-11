@@ -70,12 +70,6 @@ const TradingCardRain = ({
   }, []);
 
   useEffect(() => {
-    if (parentSize.width > 0 && parentSize.height > 0) {
-      setCards([generateCard(images, weightedRandom)]);
-    }
-  }, [parentSize, images, weightedRandom]);
-
-  useEffect(() => {
     const interval = setInterval(() => {
       setCards((prev) =>
         [...prev, generateCard(images, weightedRandom)].slice(-60)
