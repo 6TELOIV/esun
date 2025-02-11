@@ -43,7 +43,7 @@ export default function Home() {
                   \&apos;e sun\{" "}
                   <a
                     className="no-underline hover:underline text-inherit"
-                    href="https://tokipona.org/"
+                    href="https://nimi.li/esun"
                     target="_blank"
                   >
                     [Toki Pona]
